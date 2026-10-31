@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AE Infynite Printing | Sublimation Shirt Order Schedule</title>
+<style>
+:root{--navy:#071b49;--navy2:#10295c;--gold:#f4b719;--paper:#fff;--ink:#17233b;--line:#cbd2dc;--muted:#647084;--bg:#eef2f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{max-width:1600px;margin:18px auto;padding:0 14px}
+.header{background:#fff;border-radius:12px 12px 0 0;padding:22px 26px;display:flex;align-items:center;gap:22px;border-bottom:5px solid var(--gold);box-shadow:0 3px 12px #14213b10}
+.logo{width:105px;height:105px;border:4px solid var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--navy);font-weight:900;flex-shrink:0;line-height:1.15}
+.logo span{display:block;font-size:10px;letter-spacing:1px;margin-top:5px}
+.headline{flex:1;min-width:250px}
+h1{margin:0;color:var(--navy);font-size:clamp(24px,3.6vw,50px);font-weight:950;font-style:italic;line-height:1.03;letter-spacing:-1.5px}
+h1 em{display:block;color:var(--gold);font-style:italic}
+.tagline{margin-top:10px;letter-spacing:4px;font-weight:800;font-size:12px;color:var(--navy)}
+.monthbox{display:grid;gap:9px;min-width:190px;font-size:12px;font-weight:800}
+.monthbox label{display:flex;align-items:center;gap:8px}
+.monthbox input{width:135px;border:0;border-bottom:1px solid #778195;padding:5px 3px;outline:none;background:transparent}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:13px;background:#fff;border-bottom:1px solid var(--line)}
+.controls button,.controls select,.controls input{border:1px solid #cbd2dc;border-radius:7px;padding:9px 11px;background:#fff;color:var(--ink)}
+.controls .primary{background:var(--navy);color:white;border-color:var(--navy)}
+.controls .gold{background:var(--gold);color:#111;border-color:var(--gold);font-weight:800}
+.controls .spacer{flex:1}
+.calendar-wrap{background:#fff;padding:0 14px 14px}
+.weekdays,.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.weekdays div{background:var(--navy);color:#fff;text-align:center;padding:10px 4px;font-weight:900;letter-spacing:.5px;border-right:1px solid #ffffff30}
+.weekdays div:first-child{border-radius:5px 0 0 0}.weekdays div:last-child{border-radius:0 5px 0 0}
+.day{border:1px solid #aeb8c6;min-height:142px;position:relative;padding:34px 7px 7px;background:#fff;min-width:0}
+.day.empty{background:#f7f8fa}
+.day.today{box-shadow:inset 0 0 0 3px var(--gold)}
+.day-number{position:absolute;top:0;left:0;min-width:45px;padding:7px 10px;border-right:1px solid #aeb8c6;border-bottom:1px solid #aeb8c6;font-weight:900;background:#f8fafc}
+.day textarea{width:100%;height:82px;resize:vertical;border:0;border-bottom:1px dashed #d7dce4;outline:none;padding:4px 2px;font-size:12px;line-height:1.5;background:transparent}
+.day textarea:focus,.notes textarea:focus{background:#fffdf2;box-shadow:0 0 0 2px #f4b71950}
+.day .day-status{width:100%;font-size:10px;margin-top:4px;border:1px solid #e0e4ea;border-radius:4px;padding:4px;background:#fff}
+.day-orders{display:grid;gap:3px;margin-top:5px}
+.day-order{font-size:10px;line-height:1.25;padding:4px 5px;border-left:3px solid var(--navy);background:#eef3fb;border-radius:3px;overflow-wrap:anywhere}
+.day-order strong{display:block;font-size:10px}
+.day-order-status{display:block;font-size:9px;font-weight:700;margin-top:2px}
+
+.bottom{display:grid;grid-template-columns:minmax(125px,.65fr) minmax(0,4fr) minmax(165px,.85fr);gap:10px;margin-top:0;padding:0 14px 14px;background:#fff}
+.panel{border:1px solid #aeb8c6;border-radius:7px;overflow:hidden;min-width:0}
+.panel-title{background:var(--navy);color:#fff;text-align:center;font-size:12px;font-weight:900;padding:8px;letter-spacing:.5px}
+.legend{padding:8px;display:grid;grid-template-columns:1fr;gap:7px;font-size:9px}
+.legend-item{display:flex;align-items:center;gap:5px;line-height:1.2}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+.orders-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:#f7f9fc}
+.orders-top button{border:0;background:var(--gold);border-radius:5px;padding:7px 10px;font-weight:800}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{background:#f8fafc;font-size:10px}
+th,td{border:1px solid #c2c9d3;padding:5px;text-align:left;vertical-align:top}
+td input,td select,td textarea{width:100%;min-width:60px;border:0;outline:none;background:transparent;padding:4px;font-size:11px}
+td textarea{resize:vertical;min-height:28px}
+.status-pill{font-weight:800;border-radius:4px;padding:4px 5px;display:inline-block;white-space:nowrap}
+.delete-btn{border:0;background:#fee2e2;color:#a31616;border-radius:4px;padding:5px 7px}
+.link-cell a{display:inline-block;margin:3px 4px;color:#0757a6;font-weight:700;text-decoration:underline}
+.link-cell a[hidden]{display:none}
+.notes textarea{display:block;width:100%;min-height:155px;border:0;resize:vertical;padding:12px;outline:none;font-size:12px;line-height:1.7;background:repeating-linear-gradient(to bottom,#fff 0,#fff 26px,#e1e5eb 27px,#fff 28px)}
+.footer{background:var(--navy);color:white;padding:13px 22px;display:flex;justify-content:space-between;gap:15px;align-items:center;border-radius:0 0 10px 10px;font-size:12px;font-weight:800;letter-spacing:.5px}
+.footer em{color:var(--gold);font-style:normal}
+.save-state{font-weight:600;color:#d8e2f5;font-size:11px}
+@media(max-width:900px){.header{flex-wrap:wrap}.monthbox{display:flex;flex-wrap:wrap}.bottom{grid-template-columns:1fr}.day{min-height:125px}.day textarea{height:70px}.calendar-wrap{padding:0 5px 10px}.bottom{padding:0 5px 10px}.app{padding:0 6px}.day{padding-left:4px;padding-right:4px}.day-number{min-width:34px;padding:6px;font-size:12px}.weekdays div{font-size:11px}.day textarea{font-size:10px}.day .day-status{font-size:9px}}
+@media print{body{background:white}.app{margin:0;max-width:none;padding:0}.controls{display:none}.header,.calendar-wrap,.bottom{box-shadow:none}.day{min-height:115px;break-inside:avoid}.day textarea{resize:none}.delete-col,.orders-top button{display:none}.footer{border-radius:0}.notes textarea{min-height:120px}}
+
+/* Make all text typed by the user black */
+input,
+textarea,
+select,
+option,
+.day textarea,
+.day .day-status,
+td input,
+td select,
+td textarea,
+.notes textarea {
+  color: #000 !important;
+  -webkit-text-fill-color: #000;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #000 !important;
+  opacity: 0.65;
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <!-- <div class="logo"><div style="font-size:28px">AE< span></span></div><div><span>AE INFYNITE</span><span>PRINTING</span><span>EST. 2021</span></div></div> -->
+    <div class="headline">
+      <h1>SUBLIMATION SHIRTS <em>ORDER SCHEDULE</em></h1>
+      <div class="tagline">PLAN • PRINT • PRESS • DELIVER</div>
+    </div>
+    <div class="monthbox">
+      <label>MONTH: <input id="monthLabel" placeholder="e.g. November"></label>
+      <label>YEAR: <input id="yearLabel" type="number" min="2000" max="2100" placeholder="2026"></label>
+    </div>
+  </header>
+  <div style="background:#fff7d6;padding:9px 14px;font-size:12px;border-bottom:1px solid #ead58c">Online saving is enabled after Supabase and Vercel environment variables are configured. Use the same access password on your staff devices.</div>\n  <div class="controls">
+    <button id="prevMonth">← Previous</button>
+    <select id="monthSelect" aria-label="Select month"></select>
+    <input id="yearSelect" type="number" min="2000" max="2100" aria-label="Select year" style="width:100px">
+    <button id="nextMonth">Next →</button>
+    <button class="primary" id="todayBtn">Go to current month</button>
+    <span class="spacer"></span>
+    <button id="exportBtn">Export backup</button>
+    <button id="importBtn">Import backup</button>
+    <input type="file" id="importFile" accept="application/json" hidden>
+    <button class="gold" id="printBtn">Print schedule</button>
+  </div>
+  <main class="calendar-wrap">
+    <div class="weekdays"><div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div></div>
+    <div id="calendar" class="calendar"></div>
+  </main>
+  <section class="bottom">
+    <div class="panel">
+      <div class="panel-title">ORDER STATUS LEGEND</div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">ORDER DETAILS</div>
+      <div class="orders-top"><span>Track each customer order and production stage</span><button id="addOrder">+ Add order</button></div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>ORDER NO.</th><th>CUSTOMER NAME</th><th>DESIGN / ITEM</th><th>QTY</th><th>DUE DATE</th><th>STATUS</th><th>LINK</th><th>NOTES</th><th class="delete-col">DELETE</th></tr></thead>
+          <tbody id="orderRows"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel notes">
+      <div class="panel-title">NOTES / REMINDERS</div>
+      <textarea id="generalNotes" placeholder="Write reminders, supply needs, follow-ups, and important tasks..."></textarea>
+    </div>
+  </section>
+  <footer class="footer">
+    <div>Quality Prints. <em>On Time. Every Time.</em></div>
+    <div>▣ PLAN　│　▣ PRINT　│　♨ PRESS　│　▰ DELIVER</div>
+    <div>AE INFYNITE PRINTING <em>│ THANK YOU!</em><div class="save-state" id="saveState">Auto-save enabled on this device</div></div>
+  </footer>
+</div>
+<script>
+const statuses = [
+  {name:'New Order',color:'#1976d2'},
+  {name:'In Design',color:'#f4b719'},
+  {name:'Ready to Print',color:'#8e24aa'},
+  {name:'Printing',color:'#2e9d43'},
+  {name:'Pressing',color:'#ef8800'},
+  {name:'Ready for Delivery',color:'#e3222b'},
+  {name:'Delivered',color:'#999999'}
+];
+const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const today=new Date();
+let shownYear=today.getFullYear(), shownMonth=today.getMonth();
+let data={days:{},orders:[],notes:''};
+const $=id=>document.getElementById(id);
+const key=()=>`ae-schedule-${shownYear}-${String(shownMonth+1).padStart(2,'0')}`;
+let saveTimer=null;
+let appPassword=sessionStorage.getItem('ae-app-password')||'';
+function ensurePassword(){
+  if(!appPassword){
+    appPassword=prompt('Enter your AE Infynite schedule access password:')||'';
+    if(appPassword){sessionStorage.setItem('ae-app-password',appPassword);}
+  }
+  return !!appPassword;
+}
+async function loadMonth(){
+  $('monthLabel').value=monthNames[shownMonth]; $('yearLabel').value=shownYear;
+  $('monthSelect').value=shownMonth; $('yearSelect').value=shownYear;
+  $('saveState').textContent='Loading saved schedule…';
+  try{
+    // if(!ensurePassword()) throw new Error('Password required');
+    const response=await fetch(`/api/data?month=${encodeURIComponent(key())}`,{headers:{'x-app-password':appPassword}});
+    if(response.status===401){sessionStorage.removeItem('ae-app-password');appPassword='';throw new Error('Incorrect password. Refresh and try again.');}
+    if(!response.ok) throw new Error('Database could not be reached');
+    const result=await response.json();
+    data=result.data||{days:{},orders:[],notes:''};
+    $('saveState').textContent='Connected to online database ✓';
+  }catch(e){
+    try { const saved=localStorage.getItem(key()); data=saved?JSON.parse(saved):{days:{},orders:[],notes:''}; }
+    catch(err){data={days:{},orders:[],notes:''};}
+    $('saveState').textContent='Offline/local fallback: '+e.message;
+  }
+  if(!data.days)data.days={}; if(!Array.isArray(data.orders))data.orders=[]; if(typeof data.notes!=='string')data.notes='';
+  $('generalNotes').value=data.notes;
+  renderCalendar(); renderOrders();
+}
+function save(){
+  data.notes=$('generalNotes').value;
+  try{localStorage.setItem(key(),JSON.stringify(data));}catch(e){}
+  $('saveState').textContent='Saving…';
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    try{
+      // if(!ensurePassword()) throw new Error('Password required');
+      const response=await fetch('/api/data',{method:'PUT',headers:{'Content-Type':'application/json','x-app-password':appPassword},body:JSON.stringify({month:key(),data})});
+      if(response.status===401){sessionStorage.removeItem('ae-app-password');appPassword='';throw new Error('Incorrect password. Refresh and try again.');}
+      if(!response.ok) throw new Error('Online save failed');
+      $('saveState').textContent='Saved to online database ✓';
+    }catch(e){$('saveState').textContent='Local backup saved; online save failed: '+e.message;}
+  },500);
+}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function safeLink(value){
+  try {
+    const url = new URL(String(value || '').trim());
+    return ['http:', 'https:'].includes(url.protocol) ? escapeHtml(url.href) : '';
+  } catch {
+    return '';
+  }
+}
+function ordersForDate(dateKey){
+  return data.orders.filter(order => order.due === dateKey);
+}
+
+function renderCalendar(){
+  const el=$('calendar');el.innerHTML='';
+  const first=new Date(shownYear,shownMonth,1).getDay();
+  const count=new Date(shownYear,shownMonth+1,0).getDate();
+  for(let i=0;i<first;i++){const d=document.createElement('div');d.className='day empty';el.appendChild(d);}
+  for(let n=1;n<=count;n++){
+    const dateKey=`${shownYear}-${String(shownMonth+1).padStart(2,'0')}-${String(n).padStart(2,'0')}`;
+    const entry=data.days[dateKey]||{note:'',status:''};
+    const d=document.createElement('div');d.className='day';
+    if(shownYear===today.getFullYear()&&shownMonth===today.getMonth()&&n===today.getDate())d.classList.add('today');
+    d.innerHTML=`<div class="day-number">${n}</div>
+      <textarea aria-label="Notes for ${dateKey}" placeholder="Orders, printing, pressing, delivery..." data-date="${dateKey}">${escapeHtml(entry.note||'')}</textarea>
+      <select class="day-status" aria-label="Daily status for ${dateKey}" data-date-status="${dateKey}">
+        <option value="">Daily status (optional)</option>${statuses.map(s=>`<option value="${escapeHtml(s.name)}" ${entry.status===s.name?'selected':''}>${escapeHtml(s.name)}</option>`).join('')}
+      </select>
+      <div class="day-orders">${ordersForDate(dateKey).map(order => {
+        const status = statuses.find(s => s.name === order.status);
+        const color = status ? status.color : '#071b49';
+        const label = [order.no, order.customer, order.item, order.qty ? `Qty: ${order.qty}` : ''].filter(Boolean).join(' · ');
+        return `<div class="day-order" style="border-left-color:${color}">
+          <strong>${escapeHtml(label || 'Order')}</strong>
+          <span class="day-order-status" style="color:${color}">${escapeHtml(order.status || 'New Order')}</span>
+        </div>`;
+      }).join('')}</div>`;
+    el.appendChild(d);
+  }
+  const total=first+count; const trailing=(7-total%7)%7;
+  for(let i=0;i<trailing;i++){const d=document.createElement('div');d.className='day empty';el.appendChild(d);}
+  el.querySelectorAll('textarea[data-date]').forEach(t=>t.addEventListener('input',e=>{const k=e.target.dataset.date;data.days[k]=data.days[k]||{note:'',status:''};data.days[k].note=e.target.value;save();}));
+  el.querySelectorAll('select[data-date-status]').forEach(s=>s.addEventListener('change',e=>{const k=e.target.dataset.dateStatus;data.days[k]=data.days[k]||{note:'',status:''};data.days[k].status=e.target.value;save();}));
+}
+function renderLegend(){$('legend').innerHTML=statuses.map(s=>`<div class="legend-item"><span class="dot" style="background:${s.color}"></span><span>${s.name.toUpperCase()}</span></div>`).join('');}
+function renderOrders(){
+  const body=$('orderRows');body.innerHTML='';
+  data.orders.forEach((o,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><input value="${escapeHtml(o.no)}" data-i="${i}" data-field="no" placeholder="AF-001"></td>
+      <td><input value="${escapeHtml(o.customer)}" data-i="${i}" data-field="customer" placeholder="Customer"></td>
+      <td><input value="${escapeHtml(o.item)}" data-i="${i}" data-field="item" placeholder="Jersey / polo"></td>
+      <td><input type="number" min="0" value="${escapeHtml(o.qty)}" data-i="${i}" data-field="qty" style="min-width:45px"></td>
+      <td><input type="date" value="${escapeHtml(o.due)}" data-i="${i}" data-field="due" style="min-width:120px"></td>
+      <td><select data-i="${i}" data-field="status">${statuses.map(s=>`<option ${o.status===s.name?'selected':''}>${s.name}</option>`).join('')}</select></td>
+      <td class="link-cell">
+        <input type="url" value="${escapeHtml(o.link || '')}" data-i="${i}" data-field="link" placeholder="Paste URL" style="min-width:150px">
+        <a data-link-open="${i}" href="${safeLink(o.link)}" target="_blank" rel="noopener noreferrer" ${safeLink(o.link) ? '' : 'hidden'}>Open</a>
+      </td>
+      <td><textarea data-i="${i}" data-field="notes" placeholder="Sizes, balance...">${escapeHtml(o.notes)}</textarea></td>
+      <td class="delete-col"><button class="delete-btn" data-delete="${i}" aria-label="Delete order ${i+1}">✕</button></td>`;
+    body.appendChild(tr);
+  });
+  body.querySelectorAll('[data-field]').forEach(input=>{
+    const update=()=>{
+      const i=Number(input.dataset.i),field=input.dataset.field;
+      data.orders[i][field]=input.value;
+      if(field==='link'){
+        const openLink=body.querySelector(`[data-link-open="${i}"]`);
+        const href=safeLink(input.value);
+        if(openLink){openLink.href=href;openLink.hidden=!href;}
+      }
+      save();
+      if(field==='due' || field==='status') renderCalendar();
+    };
+    input.addEventListener('input',update);input.addEventListener('change',update);
+  });
+  body.querySelectorAll('[data-delete]').forEach(btn=>btn.addEventListener('click',()=>{const i=Number(btn.dataset.delete);if(confirm(`Delete order ${data.orders[i].no||'#'+(i+1)}?`)){data.orders.splice(i,1);save();renderOrders();}}));
+}
+function changeMonth(delta){shownMonth+=delta;if(shownMonth<0){shownMonth=11;shownYear--;}if(shownMonth>11){shownMonth=0;shownYear++;}loadMonth();}
+$('prevMonth').onclick=()=>changeMonth(-1);
+$('nextMonth').onclick=()=>changeMonth(1);
+$('todayBtn').onclick=()=>{shownYear=today.getFullYear();shownMonth=today.getMonth();loadMonth();};
+$('monthSelect').innerHTML=monthNames.map((m,i)=>`<option value="${i}">${m}</option>`).join('');
+$('monthSelect').onchange=e=>{shownMonth=Number(e.target.value);loadMonth();};
+$('yearSelect').onchange=e=>{const n=Number(e.target.value);if(n>=2000&&n<=2100){shownYear=n;loadMonth();}};
+$('monthLabel').addEventListener('change',e=>{const i=monthNames.findIndex(m=>m.toLowerCase()===e.target.value.trim().toLowerCase());if(i>=0){shownMonth=i;loadMonth();}});
+$('yearLabel').addEventListener('change',e=>{const n=Number(e.target.value);if(n>=2000&&n<=2100){shownYear=n;loadMonth();}});
+$('generalNotes').addEventListener('input',save);
+$('addOrder').onclick=()=>{data.orders.push({no:`AF-${String(data.orders.length+1).padStart(3,'0')}`,customer:'',item:'',qty:'',due:'',status:'New Order',link:'',notes:''});save();renderOrders();};
+$('printBtn').onclick=()=>window.print();
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({year:shownYear,month:shownMonth,data},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`AE-Order-Schedule-${shownYear}-${String(shownMonth+1).padStart(2,'0')}.json`;a.click();URL.revokeObjectURL(a.href);};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const parsed=JSON.parse(await f.text());if(parsed.data&&parsed.data.days&&Array.isArray(parsed.data.orders)){shownYear=Number(parsed.year)||shownYear;shownMonth=Number(parsed.month)||0;data=parsed.data;save();loadMonth();alert('Backup imported successfully.');}else alert('This file does not look like a schedule backup.');}catch(err){alert('Could not read this backup file.');}e.target.value='';};
+renderLegend();loadMonth();
+</script>
+</body>
+</html>

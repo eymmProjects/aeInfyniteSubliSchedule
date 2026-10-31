@@ -1,0 +1,83 @@
+/* ============================================================
+   AE INFINITE PRINTING — ORDER SCHEDULE STYLES
+   1. Theme and base
+   2. Header and toolbar
+   3. Calendar
+   4. Order panels and tables
+   5. Responsive and print layouts
+   6. Form text color
+   ============================================================ */
+:root{--navy:#071b49;--navy2:#10295c;--gold:#f4b719;--paper:#fff;--ink:#17233b;--line:#cbd2dc;--muted:#647084;--bg:#eef2f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{max-width:1600px;margin:18px auto;padding:0 14px}
+.header{background:#fff;border-radius:12px 12px 0 0;padding:22px 26px;display:flex;align-items:center;gap:22px;border-bottom:5px solid var(--gold);box-shadow:0 3px 12px #14213b10}
+.logo{width:105px;height:105px;border:4px solid var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--navy);font-weight:900;flex-shrink:0;line-height:1.15}
+.logo span{display:block;font-size:10px;letter-spacing:1px;margin-top:5px}
+.headline{flex:1;min-width:250px}
+h1{margin:0;color:var(--navy);font-size:clamp(24px,3.6vw,50px);font-weight:950;font-style:italic;line-height:1.03;letter-spacing:-1.5px}
+h1 em{display:block;color:var(--gold);font-style:italic}
+.tagline{margin-top:10px;letter-spacing:4px;font-weight:800;font-size:12px;color:var(--navy)}
+.monthbox{display:grid;gap:9px;min-width:190px;font-size:12px;font-weight:800}
+.monthbox label{display:flex;align-items:center;gap:8px}
+.monthbox input{width:135px;border:0;border-bottom:1px solid #778195;padding:5px 3px;outline:none;background:transparent}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:13px;background:#fff;border-bottom:1px solid var(--line)}
+.controls button,.controls select,.controls input{border:1px solid #cbd2dc;border-radius:7px;padding:9px 11px;background:#fff;color:var(--ink)}
+.controls .primary{background:var(--navy);color:white;border-color:var(--navy)}
+.controls .gold{background:var(--gold);color:#111;border-color:var(--gold);font-weight:800}
+.controls .spacer{flex:1}
+.calendar-wrap{background:#fff;padding:0 14px 14px}
+.weekdays,.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.weekdays div{background:var(--navy);color:#fff;text-align:center;padding:10px 4px;font-weight:900;letter-spacing:.5px;border-right:1px solid #ffffff30}
+.weekdays div:first-child{border-radius:5px 0 0 0}.weekdays div:last-child{border-radius:0 5px 0 0}
+.day{border:1px solid #aeb8c6;min-height:142px;position:relative;padding:34px 7px 7px;background:#fff;min-width:0}
+.day.empty{background:#f7f8fa}
+.day.today{box-shadow:inset 0 0 0 3px var(--gold)}
+.day-number{position:absolute;top:0;left:0;min-width:45px;padding:7px 10px;border-right:1px solid #aeb8c6;border-bottom:1px solid #aeb8c6;font-weight:900;background:#f8fafc}
+.day textarea{width:100%;height:82px;resize:vertical;border:0;border-bottom:1px dashed #d7dce4;outline:none;padding:4px 2px;font-size:12px;line-height:1.5;background:transparent}
+.day textarea:focus,.notes textarea:focus{background:#fffdf2;box-shadow:0 0 0 2px #f4b71950}
+.day .day-status{width:100%;font-size:10px;margin-top:4px;border:1px solid #e0e4ea;border-radius:4px;padding:4px;background:#fff}
+.bottom{display:grid;grid-template-columns:minmax(220px,1fr) minmax(480px,2.5fr) minmax(220px,1fr);gap:12px;margin-top:0;padding:0 14px 14px;background:#fff}
+.panel{border:1px solid #aeb8c6;border-radius:7px;overflow:hidden;min-width:0}
+.panel-title{background:var(--navy);color:#fff;text-align:center;font-size:12px;font-weight:900;padding:8px;letter-spacing:.5px}
+.legend{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:13px 8px;font-size:11px}
+.legend-item{display:flex;align-items:center;gap:7px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block;flex-shrink:0}
+.orders-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:#f7f9fc}
+.orders-top button{border:0;background:var(--gold);border-radius:5px;padding:7px 10px;font-weight:800}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{background:#f8fafc;font-size:10px}
+th,td{border:1px solid #c2c9d3;padding:5px;text-align:left;vertical-align:top}
+td input,td select,td textarea{width:100%;min-width:60px;border:0;outline:none;background:transparent;padding:4px;font-size:11px}
+td textarea{resize:vertical;min-height:28px}
+.status-pill{font-weight:800;border-radius:4px;padding:4px 5px;display:inline-block;white-space:nowrap}
+.delete-btn{border:0;background:#fee2e2;color:#a31616;border-radius:4px;padding:5px 7px}
+.notes textarea{display:block;width:100%;min-height:155px;border:0;resize:vertical;padding:12px;outline:none;font-size:12px;line-height:1.7;background:repeating-linear-gradient(to bottom,#fff 0,#fff 26px,#e1e5eb 27px,#fff 28px)}
+.footer{background:var(--navy);color:white;padding:13px 22px;display:flex;justify-content:space-between;gap:15px;align-items:center;border-radius:0 0 10px 10px;font-size:12px;font-weight:800;letter-spacing:.5px}
+.footer em{color:var(--gold);font-style:normal}
+.save-state{font-weight:600;color:#d8e2f5;font-size:11px}
+@media(max-width:900px){.header{flex-wrap:wrap}.monthbox{display:flex;flex-wrap:wrap}.bottom{grid-template-columns:1fr}.day{min-height:125px}.day textarea{height:70px}.calendar-wrap{padding:0 5px 10px}.bottom{padding:0 5px 10px}.app{padding:0 6px}.day{padding-left:4px;padding-right:4px}.day-number{min-width:34px;padding:6px;font-size:12px}.weekdays div{font-size:11px}.day textarea{font-size:10px}.day .day-status{font-size:9px}}
+@media print{body{background:white}.app{margin:0;max-width:none;padding:0}.controls{display:none}.header,.calendar-wrap,.bottom{box-shadow:none}.day{min-height:115px;break-inside:avoid}.day textarea{resize:none}.delete-col,.orders-top button{display:none}.footer{border-radius:0}.notes textarea{min-height:120px}}
+
+/* Make all text typed by the user black */
+input,
+textarea,
+select,
+option,
+.day textarea,
+.day .day-status,
+td input,
+td select,
+td textarea,
+.notes textarea {
+  color: #000 !important;
+  -webkit-text-fill-color: #000;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #000 !important;
+  opacity: 0.65;
+}

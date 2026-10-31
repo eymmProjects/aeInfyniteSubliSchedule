@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AE Infynite Printing | Sublimation Shirt Order Schedule</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="logo"><div style="font-size:28px">AE</div><div><span>AE INFYNITE</span><span>PRINTING</span><span>EST. 2021</span></div></div>
+    <div class="headline">
+      <h1>SUBLIMATION SHIRTS <em>ORDER SCHEDULE</em></h1>
+      <div class="tagline">PLAN • PRINT • PRESS • DELIVER</div>
+    </div>
+    <div class="monthbox">
+      <label>MONTH: <input id="monthLabel" placeholder="e.g. November"></label>
+      <label>YEAR: <input id="yearLabel" type="number" min="2000" max="2100" placeholder="2026"></label>
+    </div>
+  </header>
+  <div style="background:#fff7d6;padding:9px 14px;font-size:12px;border-bottom:1px solid #ead58c">Online saving is enabled after Supabase and Vercel environment variables are configured. Use the same access password on your staff devices.</div>\n  <div class="controls">
+    <button id="prevMonth">← Previous</button>
+    <select id="monthSelect" aria-label="Select month"></select>
+    <input id="yearSelect" type="number" min="2000" max="2100" aria-label="Select year" style="width:100px">
+    <button id="nextMonth">Next →</button>
+    <button class="primary" id="todayBtn">Go to current month</button>
+    <span class="spacer"></span>
+    <button id="exportBtn">Export backup</button>
+    <button id="importBtn">Import backup</button>
+    <input type="file" id="importFile" accept="application/json" hidden>
+    <button class="gold" id="printBtn">Print schedule</button>
+  </div>
+  <main class="calendar-wrap">
+    <div class="weekdays"><div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div></div>
+    <div id="calendar" class="calendar"></div>
+  </main>
+  <section class="bottom">
+    <div class="panel">
+      <div class="panel-title">ORDER STATUS LEGEND</div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">ORDER DETAILS</div>
+      <div class="orders-top"><span>Track each customer order and production stage</span><button id="addOrder">+ Add order</button></div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>ORDER NO.</th><th>CUSTOMER NAME</th><th>DESIGN / ITEM</th><th>QTY</th><th>DUE DATE</th><th>STATUS</th><th>NOTES</th><th class="delete-col">DELETE</th></tr></thead>
+          <tbody id="orderRows"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel notes">
+      <div class="panel-title">NOTES / REMINDERS</div>
+      <textarea id="generalNotes" placeholder="Write reminders, supply needs, follow-ups, and important tasks..."></textarea>
+    </div>
+  </section>
+  <footer class="footer">
+    <div>Quality Prints. <em>On Time. Every Time.</em></div>
+    <div>▣ PLAN　│　▣ PRINT　│　♨ PRESS　│　▰ DELIVER</div>
+    <div>AE INFYNITE PRINTING <em>│ THANK YOU!</em><div class="save-state" id="saveState">Auto-save enabled on this device</div></div>
+  </footer>
+</div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
